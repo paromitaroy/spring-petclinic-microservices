@@ -74,16 +74,16 @@ jobs:
         package: ${{ github.workspace }}/${{ env.API_GATEWAY_JAR }}
         jvm-options: -Xms2048m -Xmx2048m -Dspring.profiles.active=mysql
     
-    - name: Deploy admin-server
-      uses:  Azure/spring-cloud-deploy@v1
-      with:
-        azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-        action: deploy
-        service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
-        app-name: ${{ env.ADMIN_SERVER }}
-        use-staging-deployment: false
-        package: ${{ github.workspace }}/${{ secrets.ADMIN_SERVER_JAR }}
-        jvm-options: -Xms2048m -Xmx2048m -Dspring.profiles.active=mysql    
+#     - name: Deploy admin-server
+#       uses:  Azure/spring-cloud-deploy@v1
+#       with:
+#         azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
+#         action: deploy
+#         service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
+#         app-name: ${{ env.ADMIN_SERVER }}
+#         use-staging-deployment: false
+#         package: ${{ github.workspace }}/${{ secrets.ADMIN_SERVER_JAR }}
+#         jvm-options: -Xms2048m -Xmx2048m -Dspring.profiles.active=mysql    
 
     - name: Deploy customers-service
       uses: Azure/spring-cloud-deploy@v1
