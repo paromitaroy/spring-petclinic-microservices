@@ -2,9 +2,9 @@ name: Deploy to Azure Spring Cloud with Key Vault
 on: [push]
 
 env:
-  AZURE_SUBSCRIPTION: 799c12ba-353c-44a1-883d-84808ebb2216 # customize this
-  SPRING_CLOUD_SERVICE: yuchensp # customize this
-  KEYVAULT: yuchenkv # customize this
+  AZURE_SUBSCRIPTION:  # customize this
+  SPRING_CLOUD_SERVICE:  # customize this
+  KEYVAULT:  # customize this
   # ==== APPS ====:
   API_GATEWAY: api-gateway
   ADMIN_SERVER: admin-server
@@ -30,14 +30,14 @@ jobs:
     - name: Get service SP from Key Vault
       uses: Azure/get-keyvault-secrets@v1
       with:
-        keyvault: ${{ env.KEYVAULT }}
+        keyvault: ${{ secrets.KEYVAULT }}
         secrets: "AZURE-CREDENTIALS-FOR-SPRING"
       id: keyvaultaction
     
     - name: Get MySQL Secrets from Key Vault
       uses: Azure/get-keyvault-secrets@v1
       with:
-        keyvault: ${{ env.KEYVAULT }}
+        keyvault: ${{ secrets.KEYVAULT }}
         secrets: "MYSQL-SERVER-FULL-NAME,MYSQL-DATABASE-NAME,MYSQL-SERVER-ADMIN-LOGIN-NAME,MYSQL-SERVER-ADMIN-PASSWORD"
       id: mysqlsecrets
       
@@ -63,9 +63,9 @@ jobs:
     - name: Deploy api-gateway
       uses: Azure/spring-cloud-deploy@v1
       with:
-        azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+        azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
         action: deploy
-        service-name: ${{ env.SPRING_CLOUD_SERVICE }}
+        service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
         app-name: ${{ env.API_GATEWAY }}
         use-staging-deployment: false
         package: ${{ github.workspace }}/${{ env.API_GATEWAY_JAR }}
@@ -74,20 +74,20 @@ jobs:
     - name: Deploy admin-server
       uses:  Azure/spring-cloud-deploy@v1
       with:
-        azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+        azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
         action: deploy
-        service-name: ${{ env.SPRING_CLOUD_SERVICE }}
+        service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
         app-name: ${{ env.ADMIN_SERVER }}
         use-staging-deployment: false
-        package: ${{ github.workspace }}/${{ env.ADMIN_SERVER_JAR }}
+        package: ${{ github.workspace }}/${{ secrets.ADMIN_SERVER_JAR }}
         jvm-options: -Xms2048m -Xmx2048m -Dspring.profiles.active=mysql    
 
     - name: Deploy customers-service
       uses: Azure/spring-cloud-deploy@v1
       with:
-        azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+        azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
         action: deploy
-        service-name: ${{ env.SPRING_CLOUD_SERVICE }}
+        service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
         app-name: ${{ env.CUSTOMERS_SERVICE }}
         use-staging-deployment: false
         package: ${{ github.workspace }}/${{ env.CUSTOMERS_SERVICE_JAR }}
@@ -101,9 +101,9 @@ jobs:
     - name: Deploy vets-service
       uses: Azure/spring-cloud-deploy@v1
       with:
-        azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+        azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
         action: deploy
-        service-name: ${{ env.SPRING_CLOUD_SERVICE }}
+        service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
         app-name: ${{ env.VETS_SERVICE }}
         use-staging-deployment: false
         package: ${{ github.workspace }}/${{ env.VETS_SERVICE_JAR }}
@@ -117,9 +117,9 @@ jobs:
     - name: Deploy visits-service
       uses: Azure/spring-cloud-deploy@v1
       with:
-        azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+        azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
         action: deploy
-        service-name: ${{ env.SPRING_CLOUD_SERVICE }}
+        service-name: ${{ secrets.SPRING_CLOUD_SERVICE }}
         app-name: ${{ env.VISITS_SERVICE }}
         use-staging-deployment: false
         package: ${{ github.workspace }}/${{ env.VISITS_SERVICE_JAR }}
